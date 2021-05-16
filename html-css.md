@@ -14,6 +14,18 @@ DOCTYPE是文档定义类型（DTD），必须声明在HTML文档的第一行，
 
 （网上有许多观点认为`src`属性代表了资源会阻塞浏览器，实际上并非如此，img标签引入图片也是使用的`src`属性，在实际体验中我们可以看到，如果图片加载较慢会产生一种页面加载完成，只有图片所在的部分是空白的效果，另外HTML5中新增的`async`和`defer`属性也能证明）
 
+## script标签中async和defer的区别？
+
+* 两者都可以让script中的脚本加载不阻塞浏览器
+* async属性会让后续的文档加载与js脚本的加载和执行都是并行进行的，并且多个含有async属性的script标签不保证执行顺序
+* defer属性会让后续的文档加载与js脚本的加载并行进行，js脚本的执行会在文档加载完成后进行，多个含有defer属性的script会按照顺序执行
+
+## 盒子模型
+
+标准盒模型：`box-sizing: content-box` 设置的width和height就是内容区域的宽和高，盒子的总宽高是width/height + padding + border + margin
+
+怪异盒模型：`box-sizing: border-box` 设置的width和height是包括了border和padding宽和高，也就是说盒子的总宽高是width/height + margin
+
 ## margin的塌陷与合并问题
 
 塌陷：父子元素之间的问题，垂直方向上的margin会重叠在一起，取其中的最大值
@@ -22,5 +34,39 @@ DOCTYPE是文档定义类型（DTD），必须声明在HTML文档的第一行，
 
 解决方案：都可以通过触发BFC解决
 
+## 关于BFC、IFC
 
+FC：Format Context格式化上下文，是W3C规范中的一个概念，它是页面中的一个渲染区域，并且有一套渲染规则，决定了子元素如何布局，以及和其他元素之间的关系和作用。
+
+BFC为块级格式化上下文，IFC为行级格式化上下文，其他常见的还有GFC和FFC
+
+触发BFC的方法：
+
+* body根元素
+* float不为none
+* position为absolute或fixed
+* display为inline-block、flex、table-cell
+* overflow不为visible
+
+## CSS定位都有哪些，分别相对于谁？
+
+* `static` 默认
+* `relative` 相对定位，相对于原位置
+* `absolute` 绝对定位，相对于已经设定过的父级元素，没有就相对于html
+* `fixed` 固定定位，相对于浏览器窗口
+* `sticky` 粘性定位，新增的，类似于relative与fixed的结合版
+
+## 雪碧图（精灵图），优缺点
+
+雪碧图是将多个小图标合成一张大图，使用时设置成背景图，然后通过修改`background-position`和`background-size`来控制要显示的图片
+
+优点：
+
+* 减少图片的请求，从而减少HTTP请求的数量
+* 可以提前加载资源
+
+缺点：
+
+* 维护成本较高，改动图标时要改动整张图
+* HTTP2之后不存在加载优势，HTTP2采用多路复用，多张图片的请求可以用同一个连接
 
